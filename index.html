@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart-Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
-    
+    <nav class="navbar">
+        <h1>Smart-Study Planner</h1>
+        <div class="nav-links">
+            <button onclick="showpage('dashboard')">Dashboard</button>
+            <button onclick="showpage('task')">Task</button>
+            <button onclick="showpage('subject')">Subject</button>
+            <button onclick="showpage('schedule')">Schedule</button>
+            <button onclick="showpage('settings')">Settings</button>
+        </div>
+    </nav>
+
+    <section id="dashboard" class="page active">
+        <h3>Dashboard</h3>
+
+    </section>
 </body>
 </html>
