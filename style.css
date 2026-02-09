@@ -4,7 +4,7 @@
 }
 body{
     margin:0;
-    background-color: rgb(179, 174, 167);
+    background-color: rgb(234, 234, 234);
     padding:0;
 }
 /* navigate bar */
@@ -79,8 +79,60 @@ body.dark .page{
 body.dark li{
     background: #2a2a2a;
 }
-body.darrk input,body.dark select,body.dark button{
+body.dark input,body.dark select,body.dark button{
     background: #2a2a2a;
     color:white;
     border:1px solid #555;
+}
+li button{
+    margin-right: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    align-items: right;
+    justify-content: right;
+}
+.dashboard-title{
+    margin-bottom: 15px;
+}
+.dashboard-grid{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1.5fr;
+    gap: 20px;
+    margin-top: auto;
+}
+.stat-card{
+    background: #f1f1f1;
+    padding:12px;
+    border-radius: 6px;
+    text-align: center;
+}
+.stat-card p{
+    font-size:22px;
+    font-weight:bold;
+    margin:5px 0 0;
+}
+.dashboard-center h4{
+    margin-top: 0;
+}
+.list-box{
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 6px;
+    min-height: 80px;
+    margin-bottom: 15px;
+}
+.list-box li{
+    margin-bottom: 6px;
+}
+.dashboard-right{
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+.dashboard-right h4{
+    margin-top: 0;
+}
+body.dark .stat-card,body.dark .list-box,body.dark .dashboard-right{
+    background: #2a2a2a;
 }

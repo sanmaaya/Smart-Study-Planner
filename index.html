@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart-Study Planner</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
@@ -21,10 +22,34 @@
     <main>     
     <!-- dashboard page -->
     <section id="dashboard" class="page active">
-        <h3>Dashboard</h3>
-        <p>Today's Schedule</p>
-        <p>Upcoming Tasks</p>
-        <div class="chart">Progress Analysis</div>
+        <h3 class="dashboard-title">Dashboard</h3>
+        <div class="dashboard-grid">
+            <div class="dashboard-left">
+                <div class="stat-card">
+                    <h4>Total Subjects</h4>
+                    <p id="totalSubjects">0</p>
+                </div><br>
+                <div class="stat-card">
+                    <h4>Pending Tasks</h4>
+                    <p id="pendingTasks">0</p>
+                </div><br>
+                <div class="stat-card">
+                    <h4>Upcoming Schedules</h4>
+                    <p id="upcomingschedules">0</p>
+                </div>
+            </div>
+        <div class="dashboard-center">
+            <h4>Today's Schedule</h4>
+            <ul id="todayList" class="list-box"></ul>
+
+            <h4>Upcoming Tasks</h4>
+            <ul id="taskListPreview" class="list-box"></ul>
+        </div>
+        <div class="dashboard-right">
+            <h4>Progress Analytics</h4>
+            <canvas id="taskChart" ></canvas>
+        </div>
+        </div>
     </section>
 
     <!-- task manager page -->
@@ -44,9 +69,9 @@
         <h3>Subject Manager</h3>
         <input type="text" placeholder="Enter Subject" id="subjectInput">
         <select id="subjectpriority">
-            <option value="low">Low/option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
         </select>
         <button onclick="addSubject()">Add Subject</button>
         <ul id="subjectlist"></ul>
