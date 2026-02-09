@@ -85,15 +85,102 @@ function addTask(){
     document.getElementById("taskDate").value="";
     document.getElementById("taskSubject").value="";
 }
-function addSchedule(){
-
+function renderTasks(){
+    const list=document.getElementById("tasklist");
+    list.innerHTML="";
+    task.forEach((task,index)=>{
+        const li=document.createElement("li");
+        li.innerHTML='<strong>${task.title}</strong><br>${task.subject} | ${task.date}';
+        li.onclick=()=>deleteTask(index);
+        list.appendChild(li);
+    });
 }
-function resetData(){
+function deleteTask(index){
+    tasks.splice(index,1);
+    saveTasks();
+    renderTasks();
+}
+function saveTasks(){
+    localStorage.setItem(TASKS_KEY,JSON.stringify(tasks));
+}
 
+//SCHEDULE MANAGEMENT
+function addSchedule(){
+    const data=document.getElementById("scheduledate").value;
+    const time=document.getElementById("scheduletime").value;
+    const subject=document.getElementById("Schedulesubject").value;
+
+    if(!date || !time || !subject){
+        alert("Fill everything");
+        return;
+    }
+
+    const schedule={date,time,subject};
+    schedule.push(schedule);
+
+    saveSchedules();
+    renderSchedules();
+
+    document.getElementById("scheduledate").value="";
+    document.getElementById("scheduletime").value="";
+    document.getElementById("Schedulesubject").value="";
+}
+function renderSchedule(){
+    const list=document.getElementById("schedulelist");
+    list.innerHTML="";
+    schedules.forEach((sch,index)=>{
+        const li=document.createElement("li");
+        li.innerHTML=`${sch.subject} - ${sch.date} at ${sch.time}`;
+        li.onclick=()=>deleteSchedule(index);
+        list.appendChild(li);
+    });
+}
+function deleteSchedule(index){
+    schedules.splice(index,1);
+    saveSchedules();
+    renderSchedules();
+}
+function saveSchedules(){
+    localStorage.setItem(SCHEDULES_KEY,JSON.stringify(schedules));
+}
+
+//SETTINGS
+function resetData(){
+    if(!confirm("Do you want to reset all data?")) return;
+
+    subjects=[];
+    tasks=[];
+    schedules=[];
+
+    localStorage.removeItem(SUBJECTS_KEY);
+    localStorage.removeItem(TASKS_KEY);
+    localStorage.removeItem(SCHEDULES_KEY);
+
+    renderSubjects();
+    renderTasks();
+    renderSchedules();
+    updateSubjectDropdown();
 }
 function exportData(){
-
+    const data={subjects,tasks,schedules};
+    const blob=new Blob([JSON.stringify(data,null,2)],{
+        type:"application/json"
+    });
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="smart-study-planner-data.json";
+    a.click();
 }
 function setTheme(theme){
-
+    document.body.className=theme;
+    localStorage.setItem(THEME_KEY.theme);
 }
+function init(){
+    renderSchedule();
+    renderTasks();
+    renderSubjects();
+    updateSubjectDropdown();
+    const savedTheme=localStorage.getItem(THEME_KEY);
+    if(savedTheme) document.body.className=savedTheme;
+}
+init();
