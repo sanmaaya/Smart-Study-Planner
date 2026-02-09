@@ -86,8 +86,8 @@ The **Smart Study Planner** addresses these challenges by providing a **centrali
 
 Smart-Study-Planner/
 │
-├── index.html
-├── style.css
-├── script.js
-├── README.md
-└── screenshots/
+├──> index.html
+├──> style.css
+├──> script.js
+├──> README.md
+└──> screenshots/
