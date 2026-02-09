@@ -83,3 +83,11 @@ The **Smart Study Planner** addresses these challenges by providing a **centrali
   - Subject  
 - Edit or delete schedules  
 - View upcoming sche
+
+Smart-Study-Planner/
+│
+├── index.html
+├── style.css
+├── script.js
+├── README.md
+└── screenshots/
