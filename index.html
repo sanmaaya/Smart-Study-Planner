@@ -17,11 +17,66 @@
             <button onclick="showpage('schedule')">Schedule</button>
             <button onclick="showpage('settings')">Settings</button>
         </div>
-    </nav>
-
+    </nav>    
+    <main>     
+    <!-- dashboard page -->
     <section id="dashboard" class="page active">
         <h3>Dashboard</h3>
-
+        <p>Today's Schedule</p>
+        <p>Upcoming Tasks</p>
+        <div class="chart">Progress Analysis</div>
     </section>
+
+    <!-- task manager page -->
+     <section id="task" class="page">
+        <h3>Task Manager</h3>
+        <input type="text" id="taskInput" placeholder="Enter task name">
+        <input type="date" id="taskDate"/>
+        <select id="taskSubject">
+            <option value="">Select Subject</option>
+        </select>
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList"></ul>
+     </section>
+
+     <!-- Subjects page -->
+      <section id="subject" class="page">
+        <h3>Subject Manager</h3>
+        <input type="text" placeholder="Enter Subject" id="subjectInput">
+        <select id="subjectpriority">
+            <option value="low">Low/option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+        <button onclick="addSubject()">Add Subject</button>
+        <ul id="subjectlist"></ul>
+      </section>
+
+      <!-- Schedule page -->
+       <section id="schedule" class="page">
+        <h3>Schedule Planner</h3>
+        <input type="date" id="scheduledate">
+        <input type="time" id="scheduletime">
+        <select id="Schedulesubject">
+            <option value="">Select Subject</option>
+        </select>
+        <button onclick="addSchedule()">Add Schedule</button>
+        <ul id="schedulelist"></ul>
+       </section>
+
+       <!-- Settings page -->
+        <section id="settings" class="page">
+            <h3>Settings</h3>
+            <div class="settings-grp">
+                <button onclick="resetData()">Reset Data</button>
+                <button onclick="exportData()">Export Data</button>
+            </div>
+            <div class="settings-grp">
+                <h4>Theme</h4>
+                <button onclick="setTheme('light')">Light Mode</button>
+                <button onclick="setTheme('dark')">Dark Mode</button>
+            </div>
+        </section>
+        </main>
 </body>
 </html>

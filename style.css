@@ -1,0 +1,86 @@
+*{
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    margin:0;
+    background-color: rgb(179, 174, 167);
+    padding:0;
+}
+/* navigate bar */
+.navbar{
+    display:flex;
+    background-color:#706060;
+    color:white;
+    padding: 10px 20px;
+    align-items: center;
+    justify-content: space-between;
+
+}
+/* buttons in navigating bar */
+.nav-links button{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+main{
+    padding: 20px;
+}
+.page{
+    display:none;
+    background: white;
+    padding:20px;
+    border-radius: 8px;
+}
+.page.active{
+    display:block;
+}
+input,select,button{
+    padding:6px;
+    margin: 6px 0;
+    border-radius:3px;
+    border: 1px solid #ccc;
+}
+ul{
+    padding:0;
+    margin-top:10px;
+}
+li{
+    list-style:none;
+    padding:10px;
+    margin-bottom: 8px;
+    background: #eee;
+    border-radius: 4px;
+    cursor:pointer;
+}
+.chart{
+    height:120px;
+    border: 1px dashed #999;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.settings-grp{
+    margin-bottom:20px
+}
+body.dark{
+    background-color: #333;
+    color: #eee;
+}
+body.dark .navbar{
+    background-color: #000;
+}
+body.dark .page{
+    background-color: #1e1e1e;
+}
+body.dark li{
+    background: #2a2a2a;
+}
+body.darrk input,body.dark select,body.dark button{
+    background: #2a2a2a;
+    color:white;
+    border:1px solid #555;
+}
