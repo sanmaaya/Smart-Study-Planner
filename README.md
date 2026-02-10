@@ -82,7 +82,14 @@ The **Smart Study Planner** addresses these challenges by providing a **centrali
   - Time  
   - Subject  
 - Edit or delete schedules  
-- View upcoming sche
+- View upcoming schedules
+
+### 🔹 Settings
+- Reset the whole data
+- Export the data
+- Change the theme
+    - Light mode
+    - Dark mode
 
 ## 📂 Project Folder Structure
 
