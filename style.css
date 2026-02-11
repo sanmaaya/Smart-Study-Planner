@@ -57,7 +57,7 @@ li{
 }
 .chart{
     height:120px;
-    border: 1px dashed #4d1212;
+    border: 1px dashed #453a3a;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -70,18 +70,18 @@ body.dark{
     color: #eee;
 }
 body.dark .navbar{
-    background-color: #580b0b;
+    background-color: #141313;
 }
 body.dark .page{
-    background-color: #7c4e4e;
+    background-color: #191616;
 }
 body.dark li{
-    background: #6b2f2f;
+    background: #4e3030;
 }
 body.dark input,body.dark select,body.dark button{
-    background: #915252;
-    color:rgb(226, 221, 221);
-    border:1px solid #e55252;
+    background: #5c4040;
+    color:rgb(244, 227, 227);
+    border:1px solid #2d2929;
 }
 li button{
     margin-right: 6px;
