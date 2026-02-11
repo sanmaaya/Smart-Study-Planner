@@ -34,12 +34,20 @@
                     <p id="pendingTasks">0</p>
                 </div><br>
                 <div class="stat-card">
+                    <h4>Completed Tasks</h4>
+                    <p id="completedTasks">0</p>
+                </div><br>
+                <div class="stat-card">
                     <h4>Upcoming Schedules</h4>
                     <p id="upcomingschedules">0</p>
+                </div><br>
+                <div class="stat-card">
+                    <h4>Avg Tasks per Subject</h4>
+                    <p id="avgTasks">0</p>
                 </div>
             </div>
         <div class="dashboard-center">
-            <h4>Today's Schedule</h4>
+            <h4>Today's Tasks</h4>
             <ul id="todayList" class="list-box"></ul>
 
             <h4>Upcoming Tasks</h4>
@@ -48,11 +56,13 @@
         <div class="dashboard-right">
             <h4>Progress Analytics</h4>
             <canvas id="taskChart" ></canvas>
+            <h4>Task Status per Subject</h4>
+            <canvas id="taskStatusChart" ></canvas>
         </div>
         </div>
     </section>
 
-    <!-- task manager page -->
+     <!-- task manager page -->
      <section id="task" class="page">
         <h3>Task Manager</h3>
         <input type="text" id="taskInput" placeholder="Enter task name">
@@ -61,6 +71,10 @@
             <option value="">Select Subject</option>
         </select>
         <button onclick="addTask()">Add Task</button>
+        <div class="task-view-buttons">
+            <button onclick="renderTasks()">View Pending Tasks</button>
+            <button onclick="showCompletedTasks()">View Completed Tasks</button>
+        </div>
         <ul id="taskList"></ul>
      </section>
 
@@ -87,6 +101,40 @@
         </select>
         <button onclick="addSchedule()">Add Schedule</button>
         <ul id="schedulelist"></ul>
+        <div class="analysis-buttons">
+            <button onclick="showDailyAnalysis()">Daily Analysis</button>
+            <button onclick="showWeeklyAnalysis()">Weekly Analysis</button>
+        </div>
+        <div id="dailyAnalysis" class="analysis-section" style="display:none;">
+            <h4>Daily Schedule Analysis</h4>
+            <div class="stat-card">
+                <h4>Today's Schedules</h4>
+                <p id="todaySchedules">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>This Week's Schedules</h4>
+                <p id="weekSchedules">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>Most Scheduled Subject Today</h4>
+                <p id="topSubjectToday">-</p>
+            </div>
+        </div>
+        <div id="weeklyAnalysis" class="analysis-section" style="display:none;">
+            <h4>Weekly Schedule Analysis</h4>
+            <div class="stat-card">
+                <h4>Total Schedules This Week</h4>
+                <p id="totalWeekSchedules">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>Average Schedules per Day</h4>
+                <p id="avgSchedulesPerDay">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>Most Scheduled Subject This Week</h4>
+                <p id="topSubjectWeek">-</p>
+            </div>
+        </div>
        </section>
 
        <!-- Settings page -->

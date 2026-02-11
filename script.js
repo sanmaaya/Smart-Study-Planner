@@ -17,16 +17,22 @@ function showpage(pageId){
 //DASHBOARD
 function renderDashboard(){
     document.getElementById("totalSubjects").innerText=subjects.length;
-    document.getElementById("pendingTasks").innerText=tasks.length;
+    const pendingTasks = tasks.filter(t => t.status !== 'completed');
+    const completedTasks = tasks.filter(t => t.status === 'completed');
+    document.getElementById("pendingTasks").innerText=pendingTasks.length;
+    document.getElementById("completedTasks").innerText=completedTasks.length;
 
     const today=new Date().toISOString().split("T")[0];
     const upcoming=schedules.filter(s => s.date >=today).length;
     document.getElementById("upcomingschedules").innerText=upcoming;
 
+    const avgTasks = subjects.length > 0 ? (tasks.length / subjects.length).toFixed(1) : 0;
+    document.getElementById("avgTasks").innerText=avgTasks;
+
     const todayList=document.getElementById("todayList");
     todayList.innerHTML="";
 
-    const todaysTask=tasks.filter(t=>t.date===today);
+    const todaysTask=pendingTasks.filter(t=>t.date===today);
     const todaysSchedule=schedules.filter(s=>s.date===today);
 
     if(todaysTask.length===0 && todaysSchedule.length===0){
@@ -55,7 +61,7 @@ function renderUpcomingTasks() {
     const today = new Date().toISOString().split("T")[0];
 
     const upcomingTasks = tasks
-        .filter(t => t.date > today)
+        .filter(t => t.date > today && t.status !== 'completed')
         .sort((a, b) => a.date.localeCompare(b.date));
 
     if (upcomingTasks.length === 0) {
@@ -93,7 +99,7 @@ function renderTaskChart(){
                 label: "Tasks per Subject",
                 data: data,
                 backgroundColor: [
-                    "#897954", 
+                    "#897954",
                     "#b05353",
                      "#c2c435",
                       "#673d3d",
@@ -111,6 +117,71 @@ function renderTaskChart(){
             },
             scales: {
                 y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+}
+
+//BAR CHART FOR TASK STATUS PER SUBJECT
+function renderTaskStatusChart(){
+    const ctx=document.getElementById("taskStatusChart");
+    if(!ctx) return;
+
+    const subjectData={};
+    subjects.forEach(sub=>{
+        subjectData[sub.name]={pending:0, completed:0};
+    });
+
+    tasks.forEach(task=>{
+        if(subjectData[task.subject]){
+            if(task.status === 'completed'){
+                subjectData[task.subject].completed++;
+            }else{
+                subjectData[task.subject].pending++;
+            }
+        }
+    });
+
+    const labels=Object.keys(subjectData);
+    const pendingData=labels.map(label=>subjectData[label].pending);
+    const completedData=labels.map(label=>subjectData[label].completed);
+
+    if (window.taskStatusChartInstance) {
+        window.taskStatusChartInstance.destroy();
+    }
+
+    window.taskStatusChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Pending Tasks",
+                data: pendingData,
+                backgroundColor: "#f39c12"
+            },{
+                label: "Completed Tasks",
+                data: completedData,
+                backgroundColor: "#27ae60"
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                     position: "top"
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true,
                     beginAtZero: true,
                     ticks: {
                         stepSize: 1
@@ -223,13 +294,14 @@ function addTask(){
         alert("Fill everything");
         return;
     }
-    const task={title,date,subject};
+    const task={title,date,subject, status: 'pending'};
     tasks.push(task);
 
     saveTasks();
     renderTasks();
     renderDashboard();
     renderTaskChart();
+    renderTaskStatusChart();
 
 
     document.getElementById("taskInput").value="";
@@ -237,16 +309,18 @@ function addTask(){
     document.getElementById("taskSubject").value="";
 }
 function renderTasks(){
-    
+
     const list=document.getElementById("taskList");
     list.innerHTML="";
 
-    if(tasks.length === 0){
-        list.innerHTML = "<p>No tasks added yet.</p>";
+    const pendingTasks = tasks.filter(t => t.status !== 'completed');
+
+    if(pendingTasks.length === 0){
+        list.innerHTML = "<p>No pending tasks.</p>";
         return;
     }
 
-    tasks.forEach((task,index)=>{
+    pendingTasks.forEach((task,index)=>{
         const card=document.createElement("div");
         card.className="task-card";
 
@@ -257,7 +331,7 @@ function renderTasks(){
                 <p><strong>Date:</strong> ${task.date}</p>
             </div>
             <div class="task-card-actions">
-                <button class="done-btn" onclick="DoneTask(${index})">
+                <button class="done-btn" onclick="DoneTask(${tasks.indexOf(task)})">
                     Done
                 </button>
             </div>
@@ -269,7 +343,8 @@ function renderTasks(){
 
 
 function DoneTask(index){
-    tasks.splice(index,1);
+    tasks[index].status = 'completed';
+    tasks[index].completedDate = new Date().toISOString().split("T")[0];
     saveTasks();
     renderTasks();
     renderDashboard();
@@ -278,6 +353,34 @@ function DoneTask(index){
 }
 function saveTasks(){
     localStorage.setItem(TASKS_KEY,JSON.stringify(tasks));
+}
+
+function showCompletedTasks(){
+    const list=document.getElementById("taskList");
+    list.innerHTML="";
+
+    const completedTasks = tasks.filter(t => t.status === 'completed');
+
+    if(completedTasks.length === 0){
+        list.innerHTML = "<p>No completed tasks.</p>";
+        return;
+    }
+
+    completedTasks.forEach((task,index)=>{
+        const card=document.createElement("div");
+        card.className="task-card";
+
+        card.innerHTML=`
+            <div class="task-card-content">
+                <h4>${task.title}</h4>
+                <p><strong>Subject:</strong> ${task.subject}</p>
+                <p><strong>Date:</strong> ${task.date}</p>
+                <p><strong>Completed:</strong> ${task.completedDate}</p>
+            </div>
+        `;
+
+        list.appendChild(card);
+    });
 }
 
 //SCHEDULE MANAGEMENT
@@ -355,6 +458,56 @@ function saveSchedules(){
     localStorage.setItem(SCHEDULES_KEY,JSON.stringify(schedules));
 }
 
+//SCHEDULE ANALYSIS
+function showDailyAnalysis(){
+    document.getElementById("dailyAnalysis").style.display="block";
+    document.getElementById("weeklyAnalysis").style.display="none";
+
+    const today = new Date().toISOString().split("T")[0];
+    const todaysSchedules = schedules.filter(s => s.date === today);
+    document.getElementById("todaySchedules").innerText = todaysSchedules.length;
+
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+    const weekSchedules = schedules.filter(s => {
+        const sDate = new Date(s.date);
+        return sDate >= weekStart && sDate <= weekEnd;
+    });
+    document.getElementById("weekSchedules").innerText = weekSchedules.length;
+
+    const subjectCount = {};
+    todaysSchedules.forEach(s => {
+        subjectCount[s.subject] = (subjectCount[s.subject] || 0) + 1;
+    });
+    const topSubject = Object.keys(subjectCount).reduce((a, b) => subjectCount[a] > subjectCount[b] ? a : b, "-");
+    document.getElementById("topSubjectToday").innerText = topSubject;
+}
+
+function showWeeklyAnalysis(){
+    document.getElementById("weeklyAnalysis").style.display="block";
+    document.getElementById("dailyAnalysis").style.display="none";
+
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+    const weekSchedules = schedules.filter(s => {
+        const sDate = new Date(s.date);
+        return sDate >= weekStart && sDate <= weekEnd;
+    });
+    document.getElementById("totalWeekSchedules").innerText = weekSchedules.length;
+    document.getElementById("avgSchedulesPerDay").innerText = (weekSchedules.length / 7).toFixed(1);
+
+    const subjectCount = {};
+    weekSchedules.forEach(s => {
+        subjectCount[s.subject] = (subjectCount[s.subject] || 0) + 1;
+    });
+    const topSubject = Object.keys(subjectCount).reduce((a, b) => subjectCount[a] > subjectCount[b] ? a : b, "-");
+    document.getElementById("topSubjectWeek").innerText = topSubject;
+}
+
 //SETTINGS
 function resetData(){
     if(!confirm("Do you want to reset all data?")) return;
@@ -396,6 +549,7 @@ function init(){
     updateSubjectDropdown();
     renderDashboard();
     renderTaskChart();
+    renderTaskStatusChart();
     const savedTheme=localStorage.getItem(THEME_KEY);
     if(savedTheme) document.body.className=savedTheme;
 }

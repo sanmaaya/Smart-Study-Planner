@@ -4,13 +4,13 @@
 }
 body{
     margin:0;
-    background-color: rgb(234, 234, 234);
+    background-color: white;
     padding:0;
 }
 /* navigate bar */
 .navbar{
     display:flex;
-    background-color:#706060;
+    background-color:#91463c;
     color:white;
     padding: 10px 20px;
     align-items: center;
@@ -57,7 +57,7 @@ li{
 }
 .chart{
     height:120px;
-    border: 1px dashed #999;
+    border: 1px dashed #4d1212;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -70,18 +70,18 @@ body.dark{
     color: #eee;
 }
 body.dark .navbar{
-    background-color: #000;
+    background-color: #580b0b;
 }
 body.dark .page{
-    background-color: #1e1e1e;
+    background-color: #7c4e4e;
 }
 body.dark li{
-    background: #2a2a2a;
+    background: #6b2f2f;
 }
 body.dark input,body.dark select,body.dark button{
-    background: #2a2a2a;
-    color:white;
-    border:1px solid #555;
+    background: #915252;
+    color:rgb(226, 221, 221);
+    border:1px solid #e55252;
 }
 li button{
     margin-right: 6px;
@@ -100,7 +100,7 @@ li button{
     margin-top: auto;
 }
 .stat-card{
-    background: #f1f1f1;
+    background: #e0e0e0;
     padding:12px;
     border-radius: 6px;
     text-align: center;
@@ -209,6 +209,7 @@ body.dark .stat-card,body.dark .list-box,body.dark .dashboard-right{
     margin-top: 8px;
     display: flex;
     justify-content: space-between;
+    margin-left: auto;
 }
 
 .card-actions button {
@@ -241,4 +242,72 @@ body.dark .small-card p {
 .done-btn:hover {
     background-color: #1f7a33;
     transform: scale(1.05);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+    }
+    .nav-links {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    .nav-links button {
+        margin: 5px;
+        font-size: 14px;
+        flex: 1 1 auto;
+        min-width: 80px;
+    }
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .dashboard-center {
+        order: 1;
+    }
+    .dashboard-left {
+        order: 2;
+    }
+    .dashboard-right {
+        order: 3;
+    }
+    main {
+        padding: 10px;
+    }
+    .page {
+        padding: 10px;
+    }
+    #subjectlist, #schedulelist {
+        grid-template-columns: 1fr;
+    }
+    .stat-card {
+        padding: 10px;
+    }
+    .stat-card p {
+        font-size: 18px;
+    }
+    .task-card {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        border-left: #1f7a33;
+    }
+    .task-card-actions {
+        margin-top: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .small-card {
+        padding: 10px;
+    }
+    .dashboard-right canvas {
+        max-width: 100%;
+        height: auto;
+    }
 }
