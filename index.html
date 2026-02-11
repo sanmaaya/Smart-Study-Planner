@@ -1,155 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart-Study Planner</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600&family=Fira+Code&family=PT+Serif:ital@0;1&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
 </head>
-<body>
-    <nav class="navbar">
-        <h1>Smart-Study Planner</h1>
-        <div class="nav-links">
-            <button onclick="showpage('dashboard')">Dashboard</button>
-            <button onclick="showpage('task')">Task</button>
-            <button onclick="showpage('subject')">Subject</button>
-            <button onclick="showpage('schedule')">Schedule</button>
-            <button onclick="showpage('settings')">Settings</button>
-        </div>
-    </nav>    
-    <main>     
-    <!-- dashboard page -->
-    <section id="dashboard" class="page active">
-        <h3 class="dashboard-title">Dashboard</h3>
-        <div class="dashboard-grid">
-            <div class="dashboard-left">
-                <div class="stat-card">
-                    <h4>Total Subjects</h4>
-                    <p id="totalSubjects">0</p>
-                </div><br>
-                <div class="stat-card">
-                    <h4>Pending Tasks</h4>
-                    <p id="pendingTasks">0</p>
-                </div><br>
-                <div class="stat-card">
-                    <h4>Completed Tasks</h4>
-                    <p id="completedTasks">0</p>
-                </div><br>
-                <div class="stat-card">
-                    <h4>Upcoming Schedules</h4>
-                    <p id="upcomingschedules">0</p>
-                </div><br>
-                <div class="stat-card">
-                    <h4>Avg Tasks per Subject</h4>
-                    <p id="avgTasks">0</p>
+
+<body class="light">
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>PADH LO</h2>
+                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            </div>
+            <div class="nav-links">
+                <button onclick="showpage('dashboard')" class="active-nav"><span class="icon">📊</span><span
+                        class="text">Dashboard</span></button>
+                <button onclick="showpage('task')"><span class="icon">📋</span><span class="text">Tasks</span></button>
+                <button onclick="showpage('subject')"><span class="icon">📚</span><span
+                        class="text">Subjects</span></button>
+                <button onclick="showpage('schedule')"><span class="icon">📅</span><span
+                        class="text">Schedule</span></button>
+                <button onclick="showpage('goals')"><span class="icon">🎯</span><span class="text">Goals</span></button>
+                <button onclick="showpage('analytics')"><span class="icon">📈</span><span
+                        class="text">Analytics</span></button>
+                <button onclick="showpage('gpa')"><span class="icon">🎓</span><span class="text">GPA</span></button>
+                <button onclick="showpage('settings')"><span class="icon">⚙️</span><span
+                        class="text">Settings</span></button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <div class="quote-container">
+                    <p id="quoteText">"The beautiful thing about learning is that no one can take it away from you."</p>
                 </div>
-            </div>
-        <div class="dashboard-center">
-            <h4>Today's Tasks</h4>
-            <ul id="todayList" class="list-box"></ul>
+            </header>
 
-            <h4>Upcoming Tasks</h4>
-            <ul id="taskListPreview" class="list-box"></ul>
-        </div>
-        <div class="dashboard-right">
-            <h4>Progress Analytics</h4>
-            <canvas id="taskChart" ></canvas>
-            <h4>Task Status per Subject</h4>
-            <canvas id="taskStatusChart" ></canvas>
-        </div>
-        </div>
-    </section>
+            <section id="dashboard" class="page active">
+                <div class="dashboard-grid">
+                    <div class="col-left">
+                        <div class="card countdown-card">
+                            <span class="card-label">Upcoming Exams</span>
+                            <div id="countdownDisplay" class="countdown-list">Loading...</div>
+                            <div class="exam-inputs">
+                                <input type="text" id="examNameInput" placeholder="Exam Name">
+                                <input type="date" id="examDateInput">
+                                <button onclick="setDashboardExams()">Set Exam</button>
+                            </div>
+                        </div>
+                        <div class="stats-stack">
+                            <div class="stat-item">
+                                <span>Pending Tasks</span>
+                                <h3 id="pendingTasks">0</h3>
+                            </div>
+                            <div class="stat-item">
+                                <span>Completed Tasks</span>
+                                <h3 id="completedTasks">0</h3>
+                            </div>
+                            <div class="stat-item">
+                                <span>Upcoming Schedules</span>
+                                <h3 id="upcomingschedules">0</h3>
+                            </div>
+                        </div>
+                    </div>
 
-     <!-- task manager page -->
-     <section id="task" class="page">
-        <h3>Task Manager</h3>
-        <input type="text" id="taskInput" placeholder="Enter task name">
-        <input type="date" id="taskDate"/>
-        <select id="taskSubject">
-            <option value="">Select Subject</option>
-        </select>
-        <button onclick="addTask()">Add Task</button>
-        <div class="task-view-buttons">
-            <button onclick="renderTasks()">View Pending Tasks</button>
-            <button onclick="showCompletedTasks()">View Completed Tasks</button>
-        </div>
-        <ul id="taskList"></ul>
-     </section>
+                    <div class="col-center">
+                        <div class="card">
+                            <h3>Today's Focus</h3>
+                            <ul id="todayList" class="list-box"></ul>
+                        </div>
+                        <div class="card">
+                            <h3>Subject Progress</h3>
+                            <canvas id="taskStatusChart"></canvas>
+                        </div>
+                    </div>
 
-     <!-- Subjects page -->
-      <section id="subject" class="page">
-        <h3>Subject Manager</h3>
-        <input type="text" placeholder="Enter Subject" id="subjectInput">
-        <select id="subjectpriority">
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-        </select>
-        <button onclick="addSubject()">Add Subject</button>
-        <ul id="subjectlist"></ul>
-      </section>
+                    <div class="col-right">
+                        <div class="card timer-card">
+                            <h3>Focus Timer</h3>
+                            <div class="timer-display" id="timerDisplay">00:00:00</div>
+                            <div class="timer-controls">
+                                <button onclick="startTimer()" id="startBtn">Start</button>
+                                <button onclick="stopTimer()" id="stopBtn" style="display:none">Stop</button>
+                                <button onclick="resetTimer()">Reset</button>
+                            </div>
+                            <div class="timer-stats">
+                                <span>Today's Total: <strong id="todayTotalFocus">0m</strong></span>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Task Distribution</h3>
+                            <canvas id="taskChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-      <!-- Schedule page -->
-       <section id="schedule" class="page">
-        <h3>Schedule Planner</h3>
-        <input type="date" id="scheduledate">
-        <input type="time" id="scheduletime">
-        <select id="Schedulesubject">
-            <option value="">Select Subject</option>
-        </select>
-        <button onclick="addSchedule()">Add Schedule</button>
-        <ul id="schedulelist"></ul>
-        <div class="analysis-buttons">
-            <button onclick="showDailyAnalysis()">Daily Analysis</button>
-            <button onclick="showWeeklyAnalysis()">Weekly Analysis</button>
-        </div>
-        <div id="dailyAnalysis" class="analysis-section" style="display:none;">
-            <h4>Daily Schedule Analysis</h4>
-            <div class="stat-card">
-                <h4>Today's Schedules</h4>
-                <p id="todaySchedules">0</p>
-            </div>
-            <div class="stat-card">
-                <h4>This Week's Schedules</h4>
-                <p id="weekSchedules">0</p>
-            </div>
-            <div class="stat-card">
-                <h4>Most Scheduled Subject Today</h4>
-                <p id="topSubjectToday">-</p>
-            </div>
-        </div>
-        <div id="weeklyAnalysis" class="analysis-section" style="display:none;">
-            <h4>Weekly Schedule Analysis</h4>
-            <div class="stat-card">
-                <h4>Total Schedules This Week</h4>
-                <p id="totalWeekSchedules">0</p>
-            </div>
-            <div class="stat-card">
-                <h4>Average Schedules per Day</h4>
-                <p id="avgSchedulesPerDay">0</p>
-            </div>
-            <div class="stat-card">
-                <h4>Most Scheduled Subject This Week</h4>
-                <p id="topSubjectWeek">-</p>
-            </div>
-        </div>
-       </section>
+            <section id="task" class="page">
+                <div class="card">
+                    <h3>Task Manager</h3>
+                    <div class="input-group">
+                        <input type="text" id="taskInput" placeholder="What needs to be done?">
+                        <input type="date" id="taskDate">
+                        <select id="taskSubject"></select>
+                        <button onclick="addTask()">Add Task</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="taskSearch" placeholder="Search tasks..." onkeyup="filterTasks()">
+                        <button onclick="showTaskView('pending')">Pending</button>
+                        <button onclick="showTaskView('completed')">Completed</button>
+                    </div>
+                    <ul id="taskList"></ul>
+                </div>
+            </section>
 
-       <!-- Settings page -->
-        <section id="settings" class="page">
-            <h3>Settings</h3>
-            <div class="settings-grp">
-                <button onclick="resetData()">Reset Data</button>
-                <button onclick="exportData()">Export Data</button>
-            </div>
-            <div class="settings-grp">
-                <h4>Theme</h4>
-                <button onclick="setTheme('light')">Light Mode</button>
-                <button onclick="setTheme('dark')">Dark Mode</button>
-            </div>
-        </section>
+            <section id="subject" class="page">
+                <div class="card">
+                    <h3>Subject Management</h3>
+                    <div class="input-group">
+                        <input type="text" id="subjectInput" placeholder="Subject Name">
+                        <select id="subjectpriority">
+                            <option value="High">High Priority</option>
+                            <option value="Medium">Medium Priority</option>
+                            <option value="Low">Low Priority</option>
+                        </select>
+                        <button onclick="addSubject()">Add Subject</button>
+                    </div>
+                    <div id="subjectlist" class="grid-container"></div>
+                </div>
+            </section>
+
+            <section id="schedule" class="page">
+                <div class="schedule-layout">
+                    <!-- Left Side: Kanban -->
+                    <div class="card">
+                        <h3>Task & Appointment</h3>
+                        <div class="input-group">
+                            <input type="date" id="scheduledate">
+                            <input type="time" id="scheduletime">
+                            <select id="Schedulesubject"></select>
+                            <input type="text" id="scheduleReason" placeholder="Reason/Description">
+                            <button onclick="addSchedule()">Add Schedule</button>
+                        </div>
+                        <div id="schedule-kanban" class="kanban-container">
+                            <div class="kanban-col" id="planned-col">
+                                <h5>Upcoming Sessions</h5>
+                                <div class="kanban-list" id="planned-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Analysis -->
+                    <div class="schedule-right">
+                        <div class="card">
+                            <h3>Schedule Analysis</h3>
+
+                            <div class="analysis-item">
+                                <span>Daily Load</span>
+                                <div class="progress-bar">
+                                    <div id="dailyProgress" class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <p><span id="todaySchedules">0</span> sessions scheduled today</p>
+                            </div>
+
+                            <div class="analysis-item">
+                                <span>Weekly Load</span>
+                                <div class="progress-bar">
+                                    <div id="weeklyProgress" class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <p><span id="totalWeekSchedules">0</span> sessions this week</p>
+                            </div>
+
+                            <div class="stat-info">
+                                <p><strong>Top Subject (Day):</strong> <span id="topSubjectToday">-</span></p>
+                                <p><strong>Top Subject (Week):</strong> <span id="topSubjectWeek">-</span></p>
+                                <p><strong>Avg Per Day:</strong> <span id="avgSchedulesPerDay">0</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="goals" class="page">
+                <div class="card">
+                    <h3>Goals Tracker</h3>
+                    <div class="input-group">
+                        <input type="text" id="goalInput" placeholder="What is your goal?">
+                        <select id="goalType">
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Long-term">Long-term</option>
+                        </select>
+                        <input type="date" id="goalDate">
+                        <button onclick="addGoal()">Add Goal</button>
+                    </div>
+                    <div id="goalList" class="grid-container"></div>
+                </div>
+            </section>
+
+            <section id="analytics" class="page">
+                <div class="analytics-header">
+                    <h2>Progress Analytics</h2>
+                    <p>Detailed insights into your study habits and task completion.</p>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Task Distribution</h3>
+                        <canvas id="analysisTaskChart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Status Overview</h3>
+                        <canvas id="analysisStatusChart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Productivity Insights</h3>
+                        <div class="stat-info" id="productivityInsights">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gpa" class="page">
+                <div class="card">
+                    <h3>GPA Calculator</h3>
+                    <div class="input-group">
+                        <input type="text" id="courseInput" placeholder="Course Name">
+                        <input type="number" id="marksInput" placeholder="Marks (%)">
+                        <select id="weightage">
+                            <option value="0.25">25% (Assignment)</option>
+                            <option value="0.5">50% (Midterm)</option>
+                            <option value="1.0">100% (Final)</option>
+                        </select>
+                        <button onclick="addMarks()">Add Marks</button>
+                    </div>
+                    <div class="gpa-display">
+                        <h4>Current GPA: <span id="currentGPA">0.00</span></h4>
+                        <p>Estimated Grade: <span id="estimatedGrade">-</span></p>
+                    </div>
+                    <div id="marksList" class="grid-container"></div>
+                </div>
+            </section>
+
+            <section id="settings" class="page">
+                <div class="card">
+                    <h3>Settings</h3>
+                    <div class="settings-group">
+                        <h4>Appearance</h4>
+                        <p>Choose your theme:</p>
+                        <div class="theme-buttons">
+                            <button onclick="setTheme('light')">Light</button>
+                            <button onclick="setTheme('dark')">Dark</button>
+                            <button onclick="setTheme('vampire')">Vampire</button>
+                        </div>
+                        <p>Choose your font:</p>
+                        <div class="font-buttons">
+                            <button onclick="setFont('inter')" style="font-family: 'Inter';">Inter</button>
+                            <button onclick="setFont('poppins')" style="font-family: 'Poppins';">Poppins</button>
+                            <button onclick="setFont('serif')" style="font-family: serif;">Serif</button>
+                            <button onclick="setFont('mono')" style="font-family: monospace;">Mono</button>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h4>Data Management</h4>
+                        <button onclick="exportData()">Export Data (JSON)</button>
+                        <button onclick="exportReportPDF()" style="background: var(--primary);">Export Report
+                            (PDF)</button>
+                        <div class="import-box">
+                            <label for="importFile" class="btn-secondary">Import Data (JSON)</label>
+                            <input type="file" id="importFile" style="display:none" onchange="importData(event)">
+                        </div>
+                        <button onclick="resetData()" style="background: #e74c3c;">Reset All Data</button>
+                    </div>
+                </div>
+            </section>
         </main>
+    </div>
+    <script src="script.js"></script>
 </body>
+
 </html>
