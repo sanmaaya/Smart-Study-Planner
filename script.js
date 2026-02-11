@@ -43,6 +43,30 @@ function renderDashboard(){
         li.textContent=`Schedule: ${s.subject} at ${s.time}`;
         todayList.appendChild(li);
     });
+    renderUpcomingTasks();
+
+}
+function renderUpcomingTasks() {
+    const previewList = document.getElementById("taskListPreview");
+    if (!previewList) return;
+
+    previewList.innerHTML = "";
+
+    const today = new Date().toISOString().split("T")[0];
+
+    const upcomingTasks = tasks
+        .filter(t => t.date > today)
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+    if (upcomingTasks.length === 0) {
+        previewList.innerHTML = "<p>No upcoming tasks!</p>";
+        return;
+    }
+    upcomingTasks.slice(0, 5).forEach(task => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${task.title}</strong><br>${task.subject} | ${task.date}`;
+        previewList.appendChild(li);
+    });
 }
 
 //CHART FOR PROGRESS ANALYSIS
@@ -120,16 +144,31 @@ function addSubject(){
     document.getElementById("subjectInput").value="";
 }
 function renderSubjects(){
-    const list=document.getElementById("subjectlist");
-    list.innerHTML="";
+    const list = document.getElementById("subjectlist");
+    list.innerHTML = "";
+
+    if(subjects.length === 0){
+        list.innerHTML = "<p>No subjects added yet.</p>";
+        return;
+    }
+
     subjects.forEach((sub,index)=>{
-        const li=document.createElement("li");
-        li.innerHTML=`<strong>${sub.name}</strong> (${sub.priority})
-        <button onclick="editSubject(${index})">Edit</button>
-        <button onclick="deleteSubject(${index})">Delete</button>`;
-        list.appendChild(li);
+        const card = document.createElement("div");
+        card.className = "small-card";
+
+        card.innerHTML = `
+            <h4>${sub.name}</h4>
+            <p>Priority: ${sub.priority}</p>
+            <div class="card-actions">
+                <button onclick="editSubject(${index})">Edit</button>
+                <button onclick="deleteSubject(${index})">Delete</button>
+            </div>
+        `;
+
+        list.appendChild(card);
     });
 }
+
 function editSubject(index){
     const subject=subjects[index];
     document.getElementById("subjectInput").value=subject.name;
@@ -198,15 +237,37 @@ function addTask(){
     document.getElementById("taskSubject").value="";
 }
 function renderTasks(){
+    
     const list=document.getElementById("taskList");
     list.innerHTML="";
+
+    if(tasks.length === 0){
+        list.innerHTML = "<p>No tasks added yet.</p>";
+        return;
+    }
+
     tasks.forEach((task,index)=>{
-        const li=document.createElement("li");
-        li.innerHTML=`<strong>${task.title}</strong><br>${task.subject} | ${task.date}
-        <button onclick="DoneTask(${index})">Done</button>`;
-        list.appendChild(li);
+        const card=document.createElement("div");
+        card.className="task-card";
+
+        card.innerHTML=`
+            <div class="task-card-content">
+                <h4>${task.title}</h4>
+                <p><strong>Subject:</strong> ${task.subject}</p>
+                <p><strong>Date:</strong> ${task.date}</p>
+            </div>
+            <div class="task-card-actions">
+                <button class="done-btn" onclick="DoneTask(${index})">
+                    Done
+                </button>
+            </div>
+        `;
+
+        list.appendChild(card);
     });
 }
+
+
 function DoneTask(index){
     tasks.splice(index,1);
     saveTasks();
@@ -245,16 +306,32 @@ function addSchedule(){
     document.getElementById("Schedulesubject").value="";
 }
 function renderSchedules(){
-    const list=document.getElementById("schedulelist");
-    list.innerHTML="";
+    const list = document.getElementById("schedulelist");
+    list.innerHTML = "";
+
+    if(schedules.length === 0){
+        list.innerHTML = "<p>No schedules added yet.</p>";
+        return;
+    }
+
     schedules.forEach((sch,index)=>{
-        const li=document.createElement("li");
-        li.innerHTML=`${sch.subject} - ${sch.date} at ${sch.time}
-        <button onclick="editSchedule(${index})">Edit</button>
-        <button onclick="deleteSchedule(${index})">Delete</button>`;
-        list.appendChild(li);
+        const card = document.createElement("div");
+        card.className = "small-card";
+
+        card.innerHTML = `
+            <h4>${sch.subject}</h4>
+            <p>${sch.date}</p>
+            <p>${sch.time}</p>
+            <div class="card-actions">
+                <button onclick="editSchedule(${index})">Edit</button>
+                <button onclick="deleteSchedule(${index})">Delete</button>
+            </div>
+        `;
+
+        list.appendChild(card);
     });
 }
+
 function editSchedule(index){
     const sch=schedules[index];
     document.getElementById("scheduledate").value=sch.date;
