@@ -72,9 +72,14 @@ function showpage(pageId) {
         renderAnalytics();
     }
 
-    // Close sidebar on mobile when a link is clicked
-    if (window.innerWidth <= 768) {
-        document.querySelector('.sidebar').classList.remove('active');
+    // 3. Re-render charts if going to specific pages
+    if (pageId === 'dashboard') {
+        renderDashboard();
+        renderTaskChart("taskChart");
+        renderTaskStatusChart("taskStatusChart");
+    }
+    if (pageId === 'analytics') {
+        renderAnalytics();
     }
 }
 function renderDashboard() {
@@ -1240,14 +1245,7 @@ function updateCountdown() {
     });
 }
 
-function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('active');
-    } else {
-        sidebar.classList.toggle('mini');
-    }
-}
+
 
 function checkDeadlines() {
     const today = getTodayStr();

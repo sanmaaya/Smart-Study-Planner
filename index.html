@@ -14,35 +14,29 @@
 
 <body class="light">
     <div class="app-container">
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h2>PADH LO</h2>
-                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+        <header class="top-bar">
+            <div class="top-bar-main">
+                <div class="logo">
+                    <h2>PADH LO</h2>
+                </div>
+                <nav class="nav-links">
+                    <button onclick="showpage('dashboard')" class="active-nav"><span
+                            class="text">Dashboard</span></button>
+                    <button onclick="showpage('task')"><span class="text">Tasks</span></button>
+                    <button onclick="showpage('subject')"><span class="text">Subjects</span></button>
+                    <button onclick="showpage('schedule')"><span class="text">Schedule</span></button>
+                    <button onclick="showpage('goals')"><span class="text">Goals</span></button>
+                    <button onclick="showpage('analytics')"><span class="text">Analytics</span></button>
+                    <button onclick="showpage('gpa')"><span class="text">GPA</span></button>
+                    <button onclick="showpage('settings')"><span class="text">Settings</span></button>
+                </nav>
             </div>
-            <div class="nav-links">
-                <button onclick="showpage('dashboard')" class="active-nav"><span class="icon">📊</span><span
-                        class="text">Dashboard</span></button>
-                <button onclick="showpage('task')"><span class="icon">📋</span><span class="text">Tasks</span></button>
-                <button onclick="showpage('subject')"><span class="icon">📚</span><span
-                        class="text">Subjects</span></button>
-                <button onclick="showpage('schedule')"><span class="icon">📅</span><span
-                        class="text">Schedule</span></button>
-                <button onclick="showpage('goals')"><span class="icon">🎯</span><span class="text">Goals</span></button>
-                <button onclick="showpage('analytics')"><span class="icon">📈</span><span
-                        class="text">Analytics</span></button>
-                <button onclick="showpage('gpa')"><span class="icon">🎓</span><span class="text">GPA</span></button>
-                <button onclick="showpage('settings')"><span class="icon">⚙️</span><span
-                        class="text">Settings</span></button>
-            </div>
-        </nav>
+        </header>
 
         <main class="main-content">
-            <header class="top-bar">
-                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-                <div class="quote-container">
-                    <p id="quoteText">"The beautiful thing about learning is that no one can take it away from you."</p>
-                </div>
-            </header>
+            <div class="quote-container">
+                <p id="quoteText">"The beautiful thing about learning is that no one can take it away from you."</p>
+            </div>
 
             <section id="dashboard" class="page active">
                 <div class="dashboard-grid">

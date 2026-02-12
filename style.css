@@ -40,172 +40,97 @@ body {
 
 .app-container {
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-/* SIDEBAR - REDESIGN FOR MINI MODE */
-.sidebar {
-    width: 260px;
+/* TOP BAR NAVIGATION */
+.top-bar {
     background: var(--sidebar-bg);
-    color: var(--sidebar-text);
-    padding: 0;
-    position: fixed;
-    height: 100vh;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
     z-index: 1000;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.sidebar.hidden {
-    width: 0;
-    transform: translateX(-100%);
-}
-
-.sidebar.mini {
-    width: 70px;
-}
-
-.sidebar-header {
-    padding: 20px;
+.top-bar-main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    min-width: 260px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.sidebar-header h2 {
+.top-bar .logo h2 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     color: white;
-    letter-spacing: 1px;
-}
-
-.sidebar.mini .sidebar-header h2 {
-    display: none;
-}
-
-.sidebar.mini .sidebar-header {
-    justify-content: center;
-}
-
-.toggle-btn {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-
-.toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    letter-spacing: 2px;
 }
 
 .nav-links {
-    padding: 20px 10px;
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
 }
 
 .nav-links button {
-    background: transparent;
-    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--sidebar-text);
-    text-align: left;
-    padding: 12px 15px;
+    padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
 }
 
-.nav-links button .icon {
-    font-size: 1.2rem;
-    min-width: 24px;
-    display: flex;
-    justify-content: center;
-}
-
-.sidebar.mini .nav-links button .text {
-    display: none;
-}
-
-.sidebar.mini .nav-links button {
-    justify-content: center;
-    padding: 12px 0;
-}
-
 .nav-links button:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
+    transform: translateY(-2px);
 }
 
 .nav-links button.active-nav {
     background: var(--primary);
     color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.quote-container {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.quote-container p {
+    margin: 0;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: 500;
 }
 
 /* MAIN CONTENT */
 .main-content {
-    margin-left: 260px;
     flex: 1;
     padding: 40px;
-    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.main-content.sidebar-hidden {
-    margin-left: 0;
-}
 
-.sidebar.mini+.main-content {
-    margin-left: 70px;
-}
-
-/* TOP BAR */
-.top-bar {
-    background: var(--card-bg);
-    padding: 1rem 2rem;
-    border-radius: 1rem;
-    margin-bottom: 2rem;
-    border: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.menu-toggle {
-    background: var(--primary);
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.menu-toggle:hover {
-    transform: scale(1.05);
-    background: var(--primary-light);
-}
 
 
 
@@ -717,40 +642,23 @@ button:hover {
 }
 
 @media (max-width: 768px) {
-    .app-container {
+    .top-bar {
+        padding: 0.75rem 1rem;
+    }
+
+    .top-bar-main {
         flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: sticky;
-        top: 0;
-        transform: none !important;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .sidebar-header {
-        padding: 10px 20px;
-        min-width: auto;
-        display: flex;
-        flex-direction: row;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .sidebar-header .toggle-btn {
-        display: none;
+        align-items: flex-start;
+        gap: 0.75rem;
     }
 
     .nav-links {
-        flex-direction: row;
+        width: 100%;
         overflow-x: auto;
-        padding: 10px 15px;
-        gap: 8px;
-        white-space: nowrap;
+        justify-content: flex-start;
+        padding-bottom: 5px;
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
-        background: rgba(0, 0, 0, 0.2);
     }
 
     .nav-links::-webkit-scrollbar {
@@ -758,64 +666,43 @@ button:hover {
     }
 
     .nav-links button {
-        padding: 8px 16px;
+        padding: 5px 12px;
         font-size: 0.85rem;
-        gap: 6px;
-        flex-shrink: 0;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
     }
 
-    .nav-links button .text {
-        display: inline;
-    }
-
-    .nav-links button.active-nav {
-        background: var(--primary);
-        border-color: var(--primary);
-    }
-
-    .main-content {
-        margin-left: 0 !important;
-        padding: 15px;
-    }
-
-    .menu-toggle {
-        display: none;
-    }
-
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .col-right {
-        grid-column: auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .stats-stack {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-
-    .top-bar {
-        padding: 0.8rem 1rem;
+    .quote-container {
+        padding: 1rem;
         margin-bottom: 1.5rem;
     }
 
     .quote-container p {
         font-size: 0.9rem;
-        line-height: 1.4;
     }
 
-    .timer-display {
-        font-size: 2rem;
+    .main-content {
+        padding: 15px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .card {
-        padding: 1.2rem;
+        padding: 1rem;
+    }
+}
+
+/* iPhone 14 Pro Specific Tweaks */
+@media (max-width: 400px) {
+    .top-bar .logo h2 {
+        font-size: 1.25rem;
+    }
+
+    .nav-links button {
+        padding: 4px 10px;
+        font-size: 0.8rem;
     }
 }
 
