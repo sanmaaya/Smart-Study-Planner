@@ -17,7 +17,7 @@ let goals = JSON.parse(localStorage.getItem(GOALS_KEY)) || [];
 let marks = JSON.parse(localStorage.getItem(MARKS_KEY)) || [];
 let exams = JSON.parse(localStorage.getItem(EXAMS_KEY)) || [];
 let currentTaskView = 'pending'; // 'pending' or 'completed'
-let studyStreak = JSON.parse(localStorage.getItem('studyStreak')) || 0;
+let studyStreak = JSON.parse(localStorage.getItem('ssp_streak')) || 0;
 
 const getTodayStr = (offsetDays = 0) => {
     const d = new Date();
@@ -696,7 +696,7 @@ function showWeeklyAnalysis() {
 
 //SETTINGS
 function resetData() {
-    if (!confirm("Do you want to reset all data?")) return;
+    if (!confirm("Do you want to reset all data (including settings and focus stats)?")) return;
 
     subjects = [];
     tasks = [];
@@ -704,6 +704,7 @@ function resetData() {
     goals = [];
     marks = [];
     exams = [];
+    studyStreak = 0;
 
     localStorage.removeItem(SUBJECTS_KEY);
     localStorage.removeItem(TASKS_KEY);
@@ -711,28 +712,41 @@ function resetData() {
     localStorage.removeItem(GOALS_KEY);
     localStorage.removeItem(MARKS_KEY);
     localStorage.removeItem(EXAMS_KEY);
+    localStorage.removeItem('ssp_streak');
+    localStorage.removeItem('ssp_focus_today');
+    localStorage.removeItem(THEME_KEY);
+    localStorage.removeItem(FONT_KEY);
+    localStorage.removeItem('study_mode');
 
-    renderSubjects();
-    renderTasks();
-    renderSchedules();
-    renderGoals();
-    renderMarks();
-    renderExams();
-    calculateGPA();
-    updateSubjectDropdown();
-    renderDashboard();
-    renderTaskChart();
-    updateCountdown();
-
+    alert("System reset successful. Reloading...");
+    location.reload();
 }
+
 function exportData() {
-    const data = { subjects, tasks, schedules, goals, marks };
+    const data = {
+        subjects,
+        tasks,
+        schedules,
+        goals,
+        marks,
+        exams,
+        settings: {
+            theme: localStorage.getItem(THEME_KEY) || 'light',
+            font: localStorage.getItem(FONT_KEY) || 'inter',
+            studyMode: localStorage.getItem('study_mode') === 'true'
+        },
+        stats: {
+            streak: studyStreak,
+            focusToday: localStorage.getItem('ssp_focus_today') || 0
+        }
+    };
+
     const blob = new Blob([JSON.stringify(data, null, 2)], {
         type: "application/json"
     });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "smart-study-planner-data.json";
+    a.download = `smart-study-planner-backup-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
 }
 
@@ -845,13 +859,33 @@ function importData(event) {
     reader.onload = function (e) {
         try {
             const data = JSON.parse(e.target.result);
+
+            // Core Data
             localStorage.setItem(SUBJECTS_KEY, JSON.stringify(data.subjects || []));
             localStorage.setItem(TASKS_KEY, JSON.stringify(data.tasks || []));
             localStorage.setItem(SCHEDULES_KEY, JSON.stringify(data.schedules || []));
-            alert("Data imported successfully! Refreshing...");
+            localStorage.setItem(GOALS_KEY, JSON.stringify(data.goals || []));
+            localStorage.setItem(MARKS_KEY, JSON.stringify(data.marks || []));
+            localStorage.setItem(EXAMS_KEY, JSON.stringify(data.exams || []));
+
+            // Stats
+            if (data.stats) {
+                localStorage.setItem('ssp_streak', data.stats.streak || 0);
+                localStorage.setItem('ssp_focus_today', data.stats.focusToday || 0);
+            }
+
+            // Settings
+            if (data.settings) {
+                localStorage.setItem(THEME_KEY, data.settings.theme || 'light');
+                localStorage.setItem(FONT_KEY, data.settings.font || 'inter');
+                localStorage.setItem('study_mode', data.settings.studyMode || false);
+            }
+
+            alert("All package data imported successfully! The app will now refresh.");
             location.reload();
         } catch (err) {
-            alert("Error importing data: " + err);
+            console.error(err);
+            alert("Error importing data. Please ensure you are using a valid backup file.");
         }
     };
     reader.readAsText(file);
