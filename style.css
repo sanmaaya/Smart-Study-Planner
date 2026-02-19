@@ -755,3 +755,29 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 0.5rem;
+    }
+    .nav-links {
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+    }
+    .nav-links button {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    .main-content {
+        padding: 10px 5px;
+    }
+    .quote-container {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    .dashboard-grid {
+        gap: 0.5rem;
+    }
+}

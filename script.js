@@ -40,7 +40,7 @@ const quotes = [
     "It's not whether you get knocked down, it's whether you get up. - Vince Lombardi",
     "Quality is not an act, it is a habit. - Aristotle"
 ];
-
+//displayRandomQuote
 function displayRandomQuote() {
     const quoteTxt = document.getElementById("quoteText");
     if (quoteTxt) {
@@ -48,7 +48,6 @@ function displayRandomQuote() {
         quoteTxt.innerText = `"${quotes[randomIndex]}"`;
     }
 }
-
 //Which page to show
 function showpage(pageId) {
     // 1. Switch active section
@@ -152,8 +151,6 @@ function renderUpcomingTasks() {
         previewList.appendChild(li);
     });
 }
-
-//CHART FOR PROGRESS ANALYSIS
 //CHART FOR PROGRESS ANALYSIS
 function renderTaskChart(canvasId = "taskChart") {
     const ctx = document.getElementById(canvasId);
@@ -207,8 +204,6 @@ function renderTaskChart(canvasId = "taskChart") {
         }
     });
 }
-
-//BAR CHART FOR TASK STATUS PER SUBJECT
 //BAR CHART FOR TASK STATUS PER SUBJECT
 function renderTaskStatusChart(canvasId = "taskStatusChart") {
     const ctx = document.getElementById(canvasId);
@@ -274,7 +269,6 @@ function renderTaskStatusChart(canvasId = "taskStatusChart") {
         }
     });
 }
-
 function renderAnalytics() {
     renderTaskChart("analysisTaskChart");
     renderTaskStatusChart("analysisStatusChart");
@@ -308,7 +302,6 @@ function renderAnalytics() {
         </div>
     `;
 }
-
 //SUBJECT MANAGEMENT
 //to add the subject
 function addSubject() {
@@ -356,7 +349,6 @@ function renderSubjects() {
         list.appendChild(card);
     });
 }
-
 function editSubject(index) {
     const subject = subjects[index];
     document.getElementById("subjectInput").value = subject.name;
@@ -369,7 +361,6 @@ function editSubject(index) {
     renderDashboard();
     renderTaskChart();
 }
-
 function saveSubjects() {
     localStorage.setItem(SUBJECTS_KEY, JSON.stringify(subjects));
 }
