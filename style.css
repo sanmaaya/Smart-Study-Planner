@@ -76,6 +76,10 @@ body {
     flex-wrap: nowrap;
 }
 
+.hamburger {
+    display: none;
+}
+
 .nav-links button {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -760,15 +764,40 @@ button:hover {
     .top-bar {
         padding: 0.5rem;
     }
-    .nav-links {
+    .hamburger {
+        display: flex;
         flex-direction: column;
-        gap: 0.25rem;
-        width: 100%;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+    }
+    .hamburger-line {
+        width: 25px;
+        height: 3px;
+        background: white;
+        margin: 3px 0;
+        transition: 0.3s;
+    }
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--sidebar-bg);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .nav-links.open {
+        display: flex;
     }
     .nav-links button {
         width: 100%;
         padding: 10px;
         font-size: 0.9rem;
+        margin-bottom: 5px;
     }
     .main-content {
         padding: 10px 5px;
